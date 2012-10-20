@@ -102,7 +102,8 @@ public class ProblemListMojo extends AbstractMojo
 			
 			EConceptUtility eConcepts = new EConceptUtility("gov.va.refset");
 			
-			EConcept root = eConcepts.createConcept(UUID.nameUUIDFromBytes(("gov.va.refset.VA Refset").getBytes()), "VA Refset", System.currentTimeMillis());
+			//Note, this refsets node in sync'ed across a couple of projects...
+			EConcept root = eConcepts.createConcept(UUID.nameUUIDFromBytes(("gov.va.refset.VA Refsets").getBytes()), "VA Refsets", System.currentTimeMillis());
 			eConcepts.addRelationship(root, ConceptConstants.REFSET.getUuids()[0], null);
 			
 			root.writeExternal(dos);
