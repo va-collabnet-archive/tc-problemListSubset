@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>gov.va.oia.terminology.converters</groupId>
+	<artifactId>problemListRefset</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>problemListRefset</name>
+	<description>VA/KP ProblemListRefset to eConcept converter</description>
+
+	<!-- properties -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<wb-toolkit.version>2.6.0-trek-145</wb-toolkit.version>
+	</properties>
+	
+	<!-- scm>
+        <connection>scm:svn:https://csfe.aceworkspace.net/svn/repos/si-wb/trunk/problemListRefset</connection>
+        <developerConnection>scm:svn:https://csfe.aceworkspace.net/svn/repos/si-wb/trunk/problemListRefset</developerConnection>
+        <url>https://csfe.aceworkspace.net/integration/viewvc/viewvc.cgi/trunk/problemListRefset/?root=si-wb&amp;system=exsy1002</url>
+    </scm-->
+
+	<!-- dependency management -->
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-plugin-api</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ihtsdo</groupId>
+				<artifactId>wb-foundation</artifactId>
+				<version>${wb-toolkit.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.ihtsdo</groupId>
+				<artifactId>wb-api</artifactId>
+				<version>${wb-toolkit.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.ihtsdo</groupId>
+				<artifactId>wb-bdb</artifactId>
+				<version>${wb-toolkit.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.xml</groupId>
+				<artifactId>jaxp-api</artifactId>
+				<version>1.4.2</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+   				<groupId>org.jdom</groupId>
+    			<artifactId>jdom</artifactId>
+    			<version>1.1</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- build -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		  </plugins>
+	</build>
+
+	<!-- modules -->
+
+	<modules>
+		<module>problemListRefset-mojo</module>
+		<module>problemListRefset-data</module>
+	</modules>
+
+</project>
