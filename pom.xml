@@ -17,11 +17,11 @@
 		<wb-toolkit.version>2.6.0-trek-145</wb-toolkit.version>
 	</properties>
 	
-	<!-- scm>
-        <connection>scm:svn:https://csfe.aceworkspace.net/svn/repos/si-wb/trunk/problemListRefset</connection>
-        <developerConnection>scm:svn:https://csfe.aceworkspace.net/svn/repos/si-wb/trunk/problemListRefset</developerConnection>
-        <url>https://csfe.aceworkspace.net/integration/viewvc/viewvc.cgi/trunk/problemListRefset/?root=si-wb&amp;system=exsy1002</url>
-    </scm-->
+	<scm>
+        <connection>scm:svn:https://csfe.aceworkspace.net/svn/repos/va-oia-terminology-converters/problem-list-refset/trunk/</connection>
+        <developerConnection>scm:svn:https://csfe.aceworkspace.net/svn/repos/va-oia-terminology-converters/problem-list-refset/trunk/</developerConnection>
+        <url>https://csfe.aceworkspace.net/integration/viewvc/viewvc.cgi/problem-list-refset/trunk/?root=va-oia-terminology-converters&amp;system=exsy1002</url>
+    </scm>
 
 	<!-- dependency management -->
 
