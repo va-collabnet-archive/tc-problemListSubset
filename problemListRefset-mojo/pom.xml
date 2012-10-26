@@ -34,5 +34,10 @@
 			<artifactId>wb-bdb</artifactId>
 			<scope>compile</scope>
 		</dependency>
+        <dependency>
+            <groupId>gov.va.oia.terminology.converters</groupId>
+            <artifactId>convertersCommonCode</artifactId>
+            <scope>compile</scope>
+        </dependency>
 	</dependencies>
 </project>

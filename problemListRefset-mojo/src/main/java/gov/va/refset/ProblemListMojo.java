@@ -1,17 +1,17 @@
 package gov.va.refset;
 
-import gov.va.refset.util.ConsoleUtil;
-import gov.va.refset.util.EConceptUtility;
-
+import gov.va.oia.terminology.converters.sharedUtils.ConsoleUtil;
+import gov.va.oia.terminology.converters.sharedUtils.EConceptUtility;
+import gov.va.oia.terminology.converters.sharedUtils.stats.ConverterUUID;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.dwfa.ace.refset.ConceptConstants;
@@ -46,6 +46,7 @@ public class ProblemListMojo extends AbstractMojo
 
 	public void execute() throws MojoExecutionException
 	{
+		BufferedReader dataReader = null;
 		try
 		{
 			//The input path might be a specific file, or it might be a directory (which hopefully contains one file)
@@ -72,7 +73,7 @@ public class ProblemListMojo extends AbstractMojo
 			
 			ConsoleUtil.println("Reading problem list " + realPath.getAbsolutePath());
 			
-			BufferedReader dataReader = new BufferedReader(new FileReader(realPath));
+			dataReader = new BufferedReader(new FileReader(realPath));
 			
 			//Line one contains the column names
 			//Should be SCTID	FullySpecifiedName	DateOfStatusChange	SubsetStatus	SNOMEDStatus
@@ -100,33 +101,56 @@ public class ProblemListMojo extends AbstractMojo
 			DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(binaryOutputFile)));
 			
 			
-			EConceptUtility eConcepts = new EConceptUtility("gov.va.refset");
+			EConceptUtility eConcepts = new EConceptUtility("gov.va.refset:");
 			
 			//Note, this refsets node in sync'ed across a couple of projects...
-			EConcept root = eConcepts.createConcept(UUID.nameUUIDFromBytes(("gov.va.refset.VA Refsets").getBytes()), "VA Refsets", System.currentTimeMillis());
-			eConcepts.addRelationship(root, ConceptConstants.REFSET.getUuids()[0], null);
+			EConcept root = eConcepts.createConcept(ConverterUUID.nameUUIDFromBytes(("gov.va.refset.VA Refsets").getBytes()), "VA Refsets", System.currentTimeMillis());
+			eConcepts.addRelationship(root, ConceptConstants.REFSET.getUuids()[0], null, null);
 			
 			root.writeExternal(dos);
 			
-			EConcept problemListConcept = eConcepts.createConcept(UUID.nameUUIDFromBytes(("gov.va.refset.VA Refset.VA/KP Problem List").getBytes()), 
+			EConcept problemListConcept = eConcepts.createConcept(ConverterUUID.nameUUIDFromBytes(("gov.va.refset.VA Refset.VA/KP Problem List").getBytes()), 
 					"VA/KP Problem List", System.currentTimeMillis());
-			eConcepts.addRelationship(problemListConcept, root.getPrimordialUuid(), null);
+			eConcepts.addRelationship(problemListConcept, root.getPrimordialUuid(), null, null);
 			
 			
 			for (Problem p :  problemList)
 			{
 				ConsoleUtil.showProgress();
-				eConcepts.addRefsetMember(problemListConcept, Type3UuidFactory.fromSNOMED(p.getSCTID()), p.isSubsetActive(), p.getDateOfStatusChange());
+				UUID memberUuid = Type3UuidFactory.fromSNOMED(p.getSCTID());
+				ConverterUUID.addMapping(p.getSCTID(), memberUuid);
+				eConcepts.addRefsetMember(problemListConcept, memberUuid, p.isSubsetActive(), p.getDateOfStatusChange());
 			}
 			
 			problemListConcept.writeExternal(dos);
 			
 			dos.close();
+			
+			System.out.println("Load Statistics");
+			for (String s : eConcepts.getLoadStats().getSummary())
+			{
+				System.out.println(s);
+			}
+			
+			//this could be removed from final release.  Just added to help debug editor problems.
+			ConsoleUtil.println("Dumping UUID Debug File");
+			ConverterUUID.dump(new File(outputDirectory, "problemListUuidDebugMap.txt"));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			throw new MojoExecutionException("Failure during export ", e);
+		}
+		finally
+		{
+			try
+			{
+				dataReader.close();
+			}
+			catch (IOException e)
+			{
+				//noop
+			}
 		}
 	}
 }
