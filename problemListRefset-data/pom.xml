@@ -10,7 +10,7 @@
     </parent>
 
     <!-- This is the version for the output data file - should match the source file configured below -->
-    <version>2009.09.21-build-1</version>
+    <version>2009.09.21-build-2</version>
 	<artifactId>problemListRefset-data</artifactId>
 	<packaging>pom</packaging>
 	<name>problemListAnnotator-data</name>

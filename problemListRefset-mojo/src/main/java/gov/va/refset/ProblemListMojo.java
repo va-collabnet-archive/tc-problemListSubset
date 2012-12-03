@@ -2,6 +2,8 @@ package gov.va.refset;
 
 import gov.va.oia.terminology.converters.sharedUtils.ConsoleUtil;
 import gov.va.oia.terminology.converters.sharedUtils.EConceptUtility;
+import gov.va.oia.terminology.converters.sharedUtils.propertyTypes.BPT_ContentVersion;
+import gov.va.oia.terminology.converters.sharedUtils.propertyTypes.PropertyType;
 import gov.va.oia.terminology.converters.sharedUtils.stats.ConverterUUID;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -15,6 +17,7 @@ import java.util.UUID;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.dwfa.ace.refset.ConceptConstants;
+import org.dwfa.cement.ArchitectonicAuxiliary;
 import org.dwfa.util.id.Type3UuidFactory;
 import org.ihtsdo.etypes.EConcept;
 
@@ -27,6 +30,10 @@ import org.ihtsdo.etypes.EConcept;
  */
 public class ProblemListMojo extends AbstractMojo
 {
+	private String uuidRoot_ = "gov.va.refset:";
+	private EConceptUtility eConcepts_;
+	private ArrayList<PropertyType> propertyTypes_ = new ArrayList<PropertyType>();
+	private DataOutputStream dos_;
 
 	/**
 	 * Where text (tab delimited) representation of the problem list
@@ -46,6 +53,10 @@ public class ProblemListMojo extends AbstractMojo
 
 	public void execute() throws MojoExecutionException
 	{
+		PropertyType contentVersion_ = new BPT_ContentVersion(uuidRoot_);
+		contentVersion_.addPropertyName("sourceFileName");
+		propertyTypes_.add(contentVersion_);
+		
 		BufferedReader dataReader = null;
 		try
 		{
@@ -98,36 +109,41 @@ public class ProblemListMojo extends AbstractMojo
 			
 			File binaryOutputFile = new File(outputDirectory, "VA-KP-ProblemList.jbin");
 			
-			DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(binaryOutputFile)));
+			dos_ = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(binaryOutputFile)));
 			
 			
-			EConceptUtility eConcepts = new EConceptUtility("gov.va.refset:");
+			eConcepts_ = new EConceptUtility(uuidRoot_);
 			
-			//Note, this refsets node in sync'ed across a couple of projects...
-			EConcept root = eConcepts.createConcept(ConverterUUID.nameUUIDFromBytes(("gov.va.refset.VA Refsets").getBytes()), "VA Refsets", System.currentTimeMillis());
-			eConcepts.addRelationship(root, ConceptConstants.REFSET.getUuids()[0], null, null);
+			UUID archRoot = ArchitectonicAuxiliary.Concept.ARCHITECTONIC_ROOT_CONCEPT.getPrimoridalUid();
+			UUID metaDataRoot = ConverterUUID.nameUUIDFromBytes((uuidRoot_ + "metadata").getBytes());
+			eConcepts_.createAndStoreMetaDataConcept(metaDataRoot, "VA/KP Problem List Metadata", archRoot, dos_);
+			eConcepts_.loadMetaDataItems(propertyTypes_, metaDataRoot, dos_);
+
+			//Note, this refsets node is sync'ed across a couple of projects... don't change the UUID generation without changing all of them
+			EConcept root = eConcepts_.createConcept(ConverterUUID.nameUUIDFromBytes(("gov.va.refset.VA Refsets").getBytes()), "VA Refsets", System.currentTimeMillis());
+			eConcepts_.addRelationship(root, ConceptConstants.REFSET.getUuids()[0], null, null);
 			
-			root.writeExternal(dos);
+			root.writeExternal(dos_);
 			
-			EConcept problemListConcept = eConcepts.createConcept(ConverterUUID.nameUUIDFromBytes(("gov.va.refset.VA Refset.VA/KP Problem List").getBytes()), 
+			EConcept problemListConcept = eConcepts_.createConcept(ConverterUUID.nameUUIDFromBytes(("gov.va.refset.VA Refset.VA/KP Problem List").getBytes()), 
 					"VA/KP Problem List", System.currentTimeMillis());
-			eConcepts.addRelationship(problemListConcept, root.getPrimordialUuid(), null, null);
-			
+			eConcepts_.addRelationship(problemListConcept, root.getPrimordialUuid(), null, null);
+			eConcepts_.addStringAnnotation(problemListConcept, realPath.getName(), contentVersion_.getPropertyUUID("sourceFileName"), false);			
 			
 			for (Problem p :  problemList)
 			{
 				ConsoleUtil.showProgress();
 				UUID memberUuid = Type3UuidFactory.fromSNOMED(p.getSCTID());
 				ConverterUUID.addMapping(p.getSCTID(), memberUuid);
-				eConcepts.addRefsetMember(problemListConcept, memberUuid, p.isSubsetActive(), p.getDateOfStatusChange());
+				eConcepts_.addRefsetMember(problemListConcept, memberUuid, p.isSubsetActive(), p.getDateOfStatusChange());
 			}
 			
-			problemListConcept.writeExternal(dos);
+			problemListConcept.writeExternal(dos_);
 			
-			dos.close();
+			dos_.close();
 			
 			System.out.println("Load Statistics");
-			for (String s : eConcepts.getLoadStats().getSummary())
+			for (String s : eConcepts_.getLoadStats().getSummary())
 			{
 				System.out.println(s);
 			}
