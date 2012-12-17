@@ -50,11 +50,21 @@ public class ProblemListMojo extends AbstractMojo
 	 * @required
 	 */
 	private File outputDirectory;
+	
+	/**
+	 * Loader version number
+	 * Use parent because project.version pulls in the version of the data file, which I don't want.
+	 * 
+	 * @parameter expression="${project.parent.version}"
+	 * @required
+	 */
+	private String loaderVersion;
 
 	public void execute() throws MojoExecutionException
 	{
 		PropertyType contentVersion_ = new BPT_ContentVersion(uuidRoot_);
 		contentVersion_.addPropertyName("sourceFileName");
+		contentVersion_.addPropertyName("loaderVersion");
 		propertyTypes_.add(contentVersion_);
 		
 		BufferedReader dataReader = null;
@@ -128,7 +138,8 @@ public class ProblemListMojo extends AbstractMojo
 			EConcept problemListConcept = eConcepts_.createConcept(ConverterUUID.nameUUIDFromBytes(("gov.va.refset.VA Refset.VA/KP Problem List").getBytes()), 
 					"VA/KP Problem List", System.currentTimeMillis());
 			eConcepts_.addRelationship(problemListConcept, root.getPrimordialUuid(), null, null);
-			eConcepts_.addStringAnnotation(problemListConcept, realPath.getName(), contentVersion_.getPropertyUUID("sourceFileName"), false);			
+			eConcepts_.addStringAnnotation(problemListConcept, realPath.getName(), contentVersion_.getPropertyUUID("sourceFileName"), false);
+			eConcepts_.addStringAnnotation(problemListConcept, loaderVersion, contentVersion_.getPropertyUUID("loaderVersion"), false);	
 			
 			for (Problem p :  problemList)
 			{

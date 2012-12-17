@@ -6,14 +6,18 @@
     <parent>
         <artifactId>problemListRefset</artifactId>
         <groupId>gov.va.oia.terminology.converters</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.3</version>
     </parent>
 
-    <!-- This is the version for the output data file - should match the source file configured below -->
-    <version>2009.09.21-build-2</version>
 	<artifactId>problemListRefset-data</artifactId>
 	<packaging>pom</packaging>
-	<name>problemListAnnotator-data</name>
+	<name>problemListRefset-data</name>
+    <!-- this should be set to ${sourceData.version}-loader-${project.parent.version} but that doesn't appease the maven gods that know best.... -->
+    <version>2009.09.21-loader-1.3</version>
+    
+    <properties>
+        <sourceData.version>2009.09.21</sourceData.version>
+    </properties>
 
 	<build>
 		<plugins>
@@ -52,7 +56,7 @@
                                 <artifactItem>
                                     <groupId>gov.va.oia.terminology.source.problemListSubset</groupId>
                                     <artifactId>problemListSubset-src-data</artifactId>
-                                    <version>2009.09.21</version>
+                                    <version>${sourceData.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
@@ -63,9 +67,9 @@
             </plugin>
             
 			<plugin>
-				<groupId>gov.va.oia.terminology.converters</groupId>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>problemListRefset-mojo</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.parent.version}</version>
 				<executions>
 					<execution>
 						<id>buildProblemListRefset</id>
