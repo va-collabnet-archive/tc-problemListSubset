@@ -3,6 +3,7 @@ package gov.va.refset;
 import gov.va.oia.terminology.converters.sharedUtils.ConsoleUtil;
 import gov.va.oia.terminology.converters.sharedUtils.EConceptUtility;
 import gov.va.oia.terminology.converters.sharedUtils.propertyTypes.BPT_ContentVersion;
+import gov.va.oia.terminology.converters.sharedUtils.propertyTypes.BPT_ContentVersion.BaseContentVersion;
 import gov.va.oia.terminology.converters.sharedUtils.propertyTypes.PropertyType;
 import gov.va.oia.terminology.converters.sharedUtils.stats.ConverterUUID;
 import java.io.BufferedOutputStream;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.dwfa.ace.refset.ConceptConstants;
 import org.dwfa.cement.ArchitectonicAuxiliary;
 import org.dwfa.util.id.Type3UuidFactory;
 import org.ihtsdo.etypes.EConcept;
@@ -30,7 +30,7 @@ import org.ihtsdo.etypes.EConcept;
  */
 public class ProblemListMojo extends AbstractMojo
 {
-	private String uuidRoot_ = "gov.va.refset:";
+	private String uuidRoot_ = "gov.va.med.term.problemList:";
 	private EConceptUtility eConcepts_;
 	private ArrayList<PropertyType> propertyTypes_ = new ArrayList<PropertyType>();
 	private DataOutputStream dos_;
@@ -63,8 +63,7 @@ public class ProblemListMojo extends AbstractMojo
 	public void execute() throws MojoExecutionException
 	{
 		PropertyType contentVersion_ = new BPT_ContentVersion(uuidRoot_);
-		contentVersion_.addPropertyName("sourceFileName");
-		contentVersion_.addPropertyName("loaderVersion");
+		contentVersion_.addProperty("Source File Name");
 		propertyTypes_.add(contentVersion_);
 		
 		BufferedReader dataReader = null;
@@ -129,17 +128,12 @@ public class ProblemListMojo extends AbstractMojo
 			eConcepts_.createAndStoreMetaDataConcept(metaDataRoot, "VA/KP Problem List Metadata", archRoot, dos_);
 			eConcepts_.loadMetaDataItems(propertyTypes_, metaDataRoot, dos_);
 
-			//Note, this refsets node is sync'ed across a couple of projects... don't change the UUID generation without changing all of them
-			EConcept root = eConcepts_.createConcept(ConverterUUID.nameUUIDFromBytes(("gov.va.refset.VA Refsets").getBytes()), "VA Refsets", System.currentTimeMillis());
-			eConcepts_.addRelationship(root, ConceptConstants.REFSET.getUuids()[0], null, null);
-			
+			EConcept root = eConcepts_.createVARefsetRootConcept();
 			root.writeExternal(dos_);
 			
-			EConcept problemListConcept = eConcepts_.createConcept(ConverterUUID.nameUUIDFromBytes(("gov.va.refset.VA Refset.VA/KP Problem List").getBytes()), 
-					"VA/KP Problem List", System.currentTimeMillis());
-			eConcepts_.addRelationship(problemListConcept, root.getPrimordialUuid(), null, null);
-			eConcepts_.addStringAnnotation(problemListConcept, realPath.getName(), contentVersion_.getPropertyUUID("sourceFileName"), false);
-			eConcepts_.addStringAnnotation(problemListConcept, loaderVersion, contentVersion_.getPropertyUUID("loaderVersion"), false);	
+			EConcept problemListConcept = eConcepts_.createConcept("VA/KP Problem List", root.getPrimordialUuid());
+			eConcepts_.addStringAnnotation(problemListConcept, realPath.getName(), contentVersion_.getProperty("Source File Name").getUUID(), false);
+			eConcepts_.addStringAnnotation(problemListConcept, loaderVersion, BaseContentVersion.LOADER_VERSION.getProperty().getUUID(), false);	
 			
 			for (Problem p :  problemList)
 			{

@@ -6,14 +6,14 @@
     <parent>
         <artifactId>problemListRefset</artifactId>
         <groupId>gov.va.oia.terminology.converters</groupId>
-        <version>1.3</version>
+        <version>1.4</version>
     </parent>
 
 	<artifactId>problemListRefset-data</artifactId>
 	<packaging>pom</packaging>
 	<name>problemListRefset-data</name>
     <!-- this should be set to ${sourceData.version}-loader-${project.parent.version} but that doesn't appease the maven gods that know best.... -->
-    <version>2009.09.21-loader-1.3</version>
+    <version>2009.09.21-loader-1.4</version>
     
     <properties>
         <sourceData.version>2009.09.21</sourceData.version>
