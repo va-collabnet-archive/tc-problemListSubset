@@ -9,9 +9,9 @@
         <version>1.4</version>
     </parent>
 
-	<artifactId>problemListRefset-data</artifactId>
+	<artifactId>problemListRefset-econcept</artifactId>
 	<packaging>pom</packaging>
-	<name>problemListRefset-data</name>
+	<name>problemListRefset-econcept</name>
     <!-- this should be set to ${sourceData.version}-loader-${project.parent.version} but that doesn't appease the maven gods that know best.... -->
     <version>2009.09.21-loader-1.4</version>
     
@@ -77,7 +77,7 @@
                             <!-- Use this to process a local file (optionally, comment out the fetch VHAT XML data section above as well) -->
                             <!--<problemListPath>/mnt/foo/ProblemListSubset-2009-09-21.txt</problemListPath>-->
 
-                            <!-- Use this to process whatever source file comes out of the zip file found in the fetch-problemListSubset-data process -->
+                            <!-- Use this to process whatever source file comes out of the zip file found in the fetch-problemListSubset-econcept process -->
                             <problemListPath>${project.build.directory}/generated-resources/src</problemListPath>
                         </configuration>
 						<goals>

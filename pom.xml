@@ -91,7 +91,7 @@
 
 	<modules>
 		<module>problemListRefset-mojo</module>
-		<module>problemListRefset-data</module>
+		<module>problemListRefset-econcept</module>
 	</modules>
 
 </project>
