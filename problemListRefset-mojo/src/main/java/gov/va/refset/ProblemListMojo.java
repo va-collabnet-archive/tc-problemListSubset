@@ -59,6 +59,14 @@ public class ProblemListMojo extends AbstractMojo
 	 * @required
 	 */
 	private String loaderVersion;
+	
+	/**
+     * Content version number
+     * 
+     * @parameter expression="${project.version}"
+     * @required
+     */
+    private String releaseVersion;
 
 	public void execute() throws MojoExecutionException
 	{
@@ -133,7 +141,8 @@ public class ProblemListMojo extends AbstractMojo
 			
 			EConcept problemListConcept = eConcepts_.createConcept("VA/KP Problem List", root.getPrimordialUuid());
 			eConcepts_.addStringAnnotation(problemListConcept, realPath.getName(), contentVersion_.getProperty("Source File Name").getUUID(), false);
-			eConcepts_.addStringAnnotation(problemListConcept, loaderVersion, BaseContentVersion.LOADER_VERSION.getProperty().getUUID(), false);	
+			eConcepts_.addStringAnnotation(problemListConcept, loaderVersion, BaseContentVersion.LOADER_VERSION.getProperty().getUUID(), false);
+			eConcepts_.addStringAnnotation(problemListConcept, releaseVersion, BaseContentVersion.RELEASE.getProperty().getUUID(), false);
 			
 			for (Problem p :  problemList)
 			{
