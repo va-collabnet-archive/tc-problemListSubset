@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.va.oia.terminology.converters</groupId>
@@ -15,14 +14,14 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<wb-toolkit.version>2.6.0-trek-146</wb-toolkit.version>
-        <convertersCommonCode.version>1.2</convertersCommonCode.version>
+		<convertersCommonCode.version>1.2-SNAPSHOT</convertersCommonCode.version>
 	</properties>
-	
+
 	<scm>
-        <connection>scm:svn:https://csfe.aceworkspace.net/svn/repos/va-oia-terminology-converters/problem-list-refset/trunk/</connection>
-        <developerConnection>scm:svn:https://csfe.aceworkspace.net/svn/repos/va-oia-terminology-converters/problem-list-refset/trunk/</developerConnection>
-        <url>https://csfe.aceworkspace.net/integration/viewvc/viewvc.cgi/problem-list-refset/trunk/?root=va-oia-terminology-converters&amp;system=exsy1002</url>
-    </scm>
+		<connection>scm:svn:https://csfe.aceworkspace.net/svn/repos/va-oia-terminology-converters/problem-list-refset/trunk/</connection>
+		<developerConnection>scm:svn:https://csfe.aceworkspace.net/svn/repos/va-oia-terminology-converters/problem-list-refset/trunk/</developerConnection>
+		<url>https://csfe.aceworkspace.net/integration/viewvc/viewvc.cgi/problem-list-refset/trunk/?root=va-oia-terminology-converters&amp;system=exsy1002</url>
+	</scm>
 
 	<!-- dependency management -->
 
@@ -58,16 +57,16 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-   				<groupId>org.jdom</groupId>
-    			<artifactId>jdom</artifactId>
-    			<version>1.1</version>
+				<groupId>org.jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>1.1</version>
 			</dependency>
-            <dependency>
-                <groupId>gov.va.oia.terminology.converters</groupId>
-                <artifactId>convertersCommonCode</artifactId>
-                <version>${convertersCommonCode.version}</version>
-                <scope>compile</scope>
-            </dependency>
+			<dependency>
+				<groupId>gov.va.oia.terminology.converters</groupId>
+				<artifactId>convertersCommonCode</artifactId>
+				<version>${convertersCommonCode.version}</version>
+				<scope>compile</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -78,13 +77,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+				<version>2.3.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
-		  </plugins>
+		</plugins>
 	</build>
 
 	<!-- modules -->

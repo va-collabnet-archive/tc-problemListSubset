@@ -128,8 +128,7 @@ public class ProblemListMojo extends AbstractMojo
 			
 			dos_ = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(binaryOutputFile)));
 			
-			
-			eConcepts_ = new EConceptUtility(uuidRoot_);
+			eConcepts_ = new EConceptUtility(uuidRoot_, "ProblemList Path", dos_);
 			
 			UUID archRoot = ArchitectonicAuxiliary.Concept.ARCHITECTONIC_ROOT_CONCEPT.getPrimoridalUid();
 			UUID metaDataRoot = ConverterUUID.nameUUIDFromBytes((uuidRoot_ + "metadata").getBytes());
@@ -156,15 +155,16 @@ public class ProblemListMojo extends AbstractMojo
 			
 			dos_.close();
 			
-			System.out.println("Load Statistics");
+			ConsoleUtil.println("Load Statistics");
 			for (String s : eConcepts_.getLoadStats().getSummary())
 			{
-				System.out.println(s);
+				ConsoleUtil.println(s);
 			}
 			
 			//this could be removed from final release.  Just added to help debug editor problems.
 			ConsoleUtil.println("Dumping UUID Debug File");
 			ConverterUUID.dump(new File(outputDirectory, "problemListUuidDebugMap.txt"));
+			ConsoleUtil.writeOutputToFile(new File(outputDirectory, "ConsoleOutput.txt").toPath());
 		}
 		catch (Exception e)
 		{
