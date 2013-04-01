@@ -127,7 +127,7 @@ public class ProblemListMojo extends AbstractMojo
 			File binaryOutputFile = new File(outputDirectory, "VA-KP-ProblemList.jbin");
 			
 			dos_ = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(binaryOutputFile)));
-			
+			ConverterUUID.enableDupeUUIDException = true;
 			eConcepts_ = new EConceptUtility(uuidRoot_, "ProblemList Path", dos_);
 			
 			UUID archRoot = ArchitectonicAuxiliary.Concept.ARCHITECTONIC_ROOT_CONCEPT.getPrimoridalUid();
