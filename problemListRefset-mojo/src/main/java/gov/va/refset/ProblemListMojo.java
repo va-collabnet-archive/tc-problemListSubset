@@ -30,7 +30,7 @@ import org.ihtsdo.etypes.EConcept;
  */
 public class ProblemListMojo extends AbstractMojo
 {
-	private String uuidRoot_ = "gov.va.med.term.problemList:";
+	private String problemListNamespaceSeed_ = "gov.va.med.term.problemList";
 	private EConceptUtility eConcepts_;
 	private ArrayList<PropertyType> propertyTypes_ = new ArrayList<PropertyType>();
 	private DataOutputStream dos_;
@@ -70,10 +70,6 @@ public class ProblemListMojo extends AbstractMojo
 
 	public void execute() throws MojoExecutionException
 	{
-		PropertyType contentVersion_ = new BPT_ContentVersion(uuidRoot_);
-		contentVersion_.addProperty("Source File Name");
-		propertyTypes_.add(contentVersion_);
-		
 		BufferedReader dataReader = null;
 		try
 		{
@@ -127,11 +123,15 @@ public class ProblemListMojo extends AbstractMojo
 			File binaryOutputFile = new File(outputDirectory, "VA-KP-ProblemList.jbin");
 			
 			dos_ = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(binaryOutputFile)));
-			ConverterUUID.enableDupeUUIDException = true;
-			eConcepts_ = new EConceptUtility(uuidRoot_, "ProblemList Path", dos_);
+			ConverterUUID.enableDupeUUIDException_ = true;
+			eConcepts_ = new EConceptUtility(problemListNamespaceSeed_, "ProblemList Path", dos_);
+			
+			PropertyType contentVersion_ = new BPT_ContentVersion();
+			contentVersion_.addProperty("Source File Name");
+			propertyTypes_.add(contentVersion_);
 			
 			UUID archRoot = ArchitectonicAuxiliary.Concept.ARCHITECTONIC_ROOT_CONCEPT.getPrimoridalUid();
-			UUID metaDataRoot = ConverterUUID.nameUUIDFromBytes((uuidRoot_ + "metadata").getBytes());
+			UUID metaDataRoot = ConverterUUID.createNamespaceUUIDFromString("metadata");
 			eConcepts_.createAndStoreMetaDataConcept(metaDataRoot, "VA/KP Problem List Metadata", archRoot, dos_);
 			eConcepts_.loadMetaDataItems(propertyTypes_, metaDataRoot, dos_);
 
