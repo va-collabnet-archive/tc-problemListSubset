@@ -25,7 +25,7 @@ import org.ihtsdo.etypes.EConcept;
 /**
  * Goal to build the va problem list as a refset
  * 
- * @goal buildProblemListRefset
+ * @goal buildProblemListSubset
  * 
  * @phase process-sources
  */

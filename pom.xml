@@ -4,11 +4,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.va.oia.terminology.converters</groupId>
-	<artifactId>problemListRefset</artifactId>
+	<artifactId>problemListSubset</artifactId>
 	<version>1.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>problemListRefset</name>
-	<description>VA/KP ProblemListRefset to eConcept converter</description>
+	<name>problemListSubset</name>
+	<description>VA/KP ProblemListSubset to eConcept converter</description>
 
 	<!-- properties -->
 	<properties>
@@ -89,8 +89,8 @@
 	<!-- modules -->
 
 	<modules>
-		<module>problemListRefset-mojo</module>
-		<module>problemListRefset-econcept</module>
+		<module>problemListSubset-mojo</module>
+		<module>problemListSubset-econcept</module>
 	</modules>
 
 </project>
