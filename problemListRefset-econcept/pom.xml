@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>problemListRefset</artifactId>
-        <groupId>gov.va.oia.terminology.converters</groupId>
-        <version>1.4</version>
-    </parent>
+	<parent>
+		<artifactId>problemListRefset</artifactId>
+		<groupId>gov.va.oia.terminology.converters</groupId>
+		<version>1.4-SNAPSHOT</version>
+	</parent>
 
 	<artifactId>problemListRefset-econcept</artifactId>
 	<packaging>pom</packaging>
 	<name>problemListRefset-econcept</name>
-    <!-- this should be set to ${sourceData.version}-loader-${project.parent.version} but that doesn't appease the maven gods that know best.... -->
-    <version>2009.09.21-loader-1.4</version>
-    
-    <properties>
-        <sourceData.version>2009.09.21</sourceData.version>
-    </properties>
+	<!-- this should be set to ${sourceData.version}-loader-${project.parent.version} but that doesn't appease the maven gods that know best.... -->
+	<version>2009.09.21-loader-1.4-SNAPSHOT</version>
+
+	<properties>
+		<sourceData.version>2009.09.21</sourceData.version>
+	</properties>
 
 	<build>
 		<plugins>
@@ -39,54 +37,54 @@
 					</execution>
 				</executions>
 			</plugin>
-            
-            <!-- Get ProblemList source file from archiva -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>fetch-problemListSubset-data</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>gov.va.oia.terminology.source.problemListSubset</groupId>
-                                    <artifactId>problemListSubset-src-data</artifactId>
-                                    <version>${sourceData.version}</version>
-                                    <type>zip</type>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${project.build.directory}/generated-resources/src</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
+
+			<!-- Get ProblemList source file from archiva -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>fetch-problemListSubset-data</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>gov.va.oia.terminology.source.problemListSubset</groupId>
+									<artifactId>problemListSubset-src-data</artifactId>
+									<version>${sourceData.version}</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.build.directory}/generated-resources/src</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>problemListRefset-mojo</artifactId>
-                <version>${project.parent.version}</version>
+				<version>${project.parent.version}</version>
 				<executions>
 					<execution>
 						<id>buildProblemListRefset</id>
-                        <configuration>
-                            <!-- Use this to process a local file (optionally, comment out the fetch VHAT XML data section above as well) -->
-                            <!--<problemListPath>/mnt/foo/ProblemListSubset-2009-09-21.txt</problemListPath>-->
+						<configuration>
+							<!-- Use this to process a local file (optionally, comment out the fetch VHAT XML data section above as well) -->
+							<!--<problemListPath>/mnt/foo/ProblemListSubset-2009-09-21.txt</problemListPath>-->
 
-                            <!-- Use this to process whatever source file comes out of the zip file found in the fetch-problemListSubset-econcept process -->
-                            <problemListPath>${project.build.directory}/generated-resources/src</problemListPath>
-                        </configuration>
+							<!-- Use this to process whatever source file comes out of the zip file found in the fetch-problemListSubset-econcept process -->
+							<problemListPath>${project.build.directory}/generated-resources/src</problemListPath>
+						</configuration>
 						<goals>
 							<goal>buildProblemListRefset</goal>
 						</goals>
 						<phase>generate-resources</phase>
 					</execution>
 				</executions>
-			</plugin>   
+			</plugin>
 		</plugins>
 	</build>
 </project>

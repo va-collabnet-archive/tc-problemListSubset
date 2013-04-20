@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.va.oia.terminology.converters</groupId>
 	<artifactId>problemListRefset</artifactId>
-	<version>1.4</version>
+	<version>1.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>problemListRefset</name>
 	<description>VA/KP ProblemListRefset to eConcept converter</description>
@@ -14,7 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<wb-toolkit.version>2.6.0-trek-146</wb-toolkit.version>
-		<convertersCommonCode.version>1.2-SNAPSHOT</convertersCommonCode.version>
+		<convertersCommonCode.version>2.0-SNAPSHOT</convertersCommonCode.version>
 	</properties>
 
 	<scm>
