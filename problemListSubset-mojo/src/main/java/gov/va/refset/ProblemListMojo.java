@@ -124,7 +124,6 @@ public class ProblemListMojo extends AbstractMojo
 			File binaryOutputFile = new File(outputDirectory, "VA-KP-ProblemList.jbin");
 			
 			dos_ = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(binaryOutputFile)));
-			ConverterUUID.enableDupeUUIDException_ = true;
 			eConcepts_ = new EConceptUtility(problemListNamespaceSeed_, "ProblemList Path", dos_);
 			
 			PropertyType contentVersion_ = new BPT_ContentVersion();
