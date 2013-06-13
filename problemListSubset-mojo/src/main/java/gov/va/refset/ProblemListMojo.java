@@ -134,7 +134,7 @@ public class ProblemListMojo extends AbstractMojo
 			
 			UUID archRoot = ArchitectonicAuxiliary.Concept.ARCHITECTONIC_ROOT_CONCEPT.getPrimoridalUid();
 			UUID metaDataRoot = ConverterUUID.createNamespaceUUIDFromString("metadata");
-			eConcepts_.createAndStoreMetaDataConcept(metaDataRoot, "VA/KP Problem List Metadata", archRoot, dos_);
+			eConcepts_.createAndStoreMetaDataConcept(metaDataRoot, "VA/KP Problem List Metadata", false, archRoot, dos_);
 			eConcepts_.loadMetaDataItems(propertyTypes_, metaDataRoot, dos_);
 
 			EConcept problemListConcept = refsets.getConcept("VA/KP Problem List");
