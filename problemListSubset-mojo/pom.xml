@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>problemListSubset</artifactId>
 		<groupId>gov.va.oia.terminology.converters</groupId>
-		<version>1.5-SNAPSHOT</version>
+		<version>1.5</version>
 	</parent>
 
 	<artifactId>problemListSubset-mojo</artifactId>
