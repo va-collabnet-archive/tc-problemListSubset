@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.va.oia.terminology.converters</groupId>
 	<artifactId>problemListSubset</artifactId>
-	<version>1.7-SNAPSHOT</version>
+	<version>1.7</version>
 	<packaging>pom</packaging>
 	<name>problemListSubset</name>
 	<description>VA/KP ProblemListSubset to eConcept converter</description>
@@ -13,8 +13,8 @@
 	<!-- properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<wb-toolkit.version>2.6.0-trek-146</wb-toolkit.version>
-		<convertersCommonCode.version>2.4-SNAPSHOT</convertersCommonCode.version>
+		<wb-toolkit.version>2.32-trek-no-jini-va-1.4</wb-toolkit.version>
+		<convertersCommonCode.version>2.4</convertersCommonCode.version>
 	</properties>
 
 	<scm>
