@@ -4,14 +4,14 @@
 	<parent>
 		<artifactId>problemListSubset</artifactId>
 		<groupId>gov.va.oia.terminology.converters</groupId>
-		<version>1.7</version>
+		<version>1.8-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>problemListSubset-econcept</artifactId>
 	<packaging>pom</packaging>
 	<name>problemListSubset-econcept</name>
 	<!-- this should be set to ${sourceData.version}-loader-${project.parent.version} but that doesn't appease the maven gods that know best.... -->
-	<version>2009.09.21-loader-1.7</version>
+	<version>2009.09.21-loader-1.8-SNAPSHOT</version>
 
 	<properties>
 		<sourceData.version>2009.09.21</sourceData.version>
