@@ -6,6 +6,7 @@ import gov.va.oia.terminology.converters.sharedUtils.propertyTypes.BPT_ContentVe
 import gov.va.oia.terminology.converters.sharedUtils.propertyTypes.PropertyType;
 import gov.va.oia.terminology.converters.sharedUtils.stats.ConverterUUID;
 import gov.va.refset.propertyTypes.PT_RefSets;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -13,8 +14,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.UUID;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.dwfa.cement.ArchitectonicAuxiliary;
@@ -68,6 +71,7 @@ public class ProblemListMojo extends AbstractMojo
 	 */
 	private String releaseVersion;
 
+	@Override
 	public void execute() throws MojoExecutionException
 	{
 		BufferedReader dataReader = null;
@@ -120,9 +124,11 @@ public class ProblemListMojo extends AbstractMojo
 			outputDirectory.mkdir();
 
 			File binaryOutputFile = new File(outputDirectory, "VA-KP-ProblemList.jbin");
+			
+			SimpleDateFormat parse = new SimpleDateFormat("yyyy.MM.dd");
 
 			dos_ = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(binaryOutputFile)));
-			eConcepts_ = new EConceptUtility(problemListNamespaceSeed_, "ProblemList Path", dos_);
+			eConcepts_ = new EConceptUtility(problemListNamespaceSeed_, "ProblemList Path", dos_, parse.parse(releaseVersion.substring(0, 11)).getTime());
 
 			BPT_ContentVersion contentVersion = new BPT_ContentVersion();
 			contentVersion.addProperty("Source File Name");
@@ -160,7 +166,7 @@ public class ProblemListMojo extends AbstractMojo
 
 			// this could be removed from final release. Just added to help debug editor problems.
 			ConsoleUtil.println("Dumping UUID Debug File");
-			ConverterUUID.dump(new File(outputDirectory, "problemListUuidDebugMap.txt"));
+			ConverterUUID.dump(outputDirectory, "problemListUuid");
 			ConsoleUtil.writeOutputToFile(new File(outputDirectory, "ConsoleOutput.txt").toPath());
 		}
 		catch (Exception e)
