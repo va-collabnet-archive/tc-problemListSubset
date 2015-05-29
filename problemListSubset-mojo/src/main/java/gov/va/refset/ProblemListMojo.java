@@ -1,6 +1,7 @@
 package gov.va.refset;
 
 import gov.va.oia.terminology.converters.sharedUtils.ConsoleUtil;
+import gov.va.oia.terminology.converters.sharedUtils.ConverterBaseMojo;
 import gov.va.oia.terminology.converters.sharedUtils.EConceptUtility;
 import gov.va.oia.terminology.converters.sharedUtils.propertyTypes.BPT_ContentVersion;
 import gov.va.oia.terminology.converters.sharedUtils.propertyTypes.PropertyType;
@@ -18,58 +19,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.dwfa.cement.ArchitectonicAuxiliary;
 import org.dwfa.util.id.Type3UuidFactory;
 import org.ihtsdo.etypes.EConcept;
 
 /**
  * Goal to build the va problem list as a refset
- * 
- * @goal buildProblemListSubset
- * 
- * @phase process-sources
  */
-public class ProblemListMojo extends AbstractMojo
+@Mojo( name = "buildProblemListSubset", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+public class ProblemListMojo extends ConverterBaseMojo
 {
 	private String problemListNamespaceSeed_ = "gov.va.med.term.problemList";
 	private EConceptUtility eConcepts_;
 	private ArrayList<PropertyType> propertyTypes_ = new ArrayList<PropertyType>();
 	private DataOutputStream dos_;
 
-	/**
-	 * Where text (tab delimited) representation of the problem list
-	 * 
-	 * @parameter
-	 * @required
-	 */
-	private File problemListPath;
-
-	/**
-	 * Location of the file.
-	 * 
-	 * @parameter expression="${project.build.directory}"
-	 * @required
-	 */
-	private File outputDirectory;
-
-	/**
-	 * Loader version number
-	 * Use parent because project.version pulls in the version of the data file, which I don't want.
-	 * 
-	 * @parameter expression="${project.parent.version}"
-	 * @required
-	 */
-	private String loaderVersion;
-
-	/**
-	 * Content version number
-	 * 
-	 * @parameter expression="${project.version}"
-	 * @required
-	 */
-	private String releaseVersion;
 
 	@Override
 	public void execute() throws MojoExecutionException
@@ -79,13 +46,13 @@ public class ProblemListMojo extends AbstractMojo
 		{
 			// The input path might be a specific file, or it might be a directory (which hopefully contains one file)
 			File realPath = null;
-			if (problemListPath.isFile())
+			if (inputFileLocation.isFile())
 			{
-				realPath = problemListPath;
+				realPath = inputFileLocation;
 			}
 			else
 			{
-				for (File f : problemListPath.listFiles())
+				for (File f : inputFileLocation.listFiles())
 				{
 					if (f.isFile() && f.getName().toLowerCase().endsWith(".txt") && f.getName().toLowerCase().startsWith("problemlist"))
 					{
@@ -96,7 +63,7 @@ public class ProblemListMojo extends AbstractMojo
 			}
 			if (realPath == null)
 			{
-				throw new MojoExecutionException("Could not find a data file to process after looking in " + problemListPath.getAbsolutePath());
+				throw new MojoExecutionException("Could not find a data file to process after looking in " + inputFileLocation.getAbsolutePath());
 			}
 
 			ConsoleUtil.println("Reading problem list " + realPath.getAbsolutePath());
@@ -128,7 +95,7 @@ public class ProblemListMojo extends AbstractMojo
 			SimpleDateFormat parse = new SimpleDateFormat("yyyy.MM.dd");
 
 			dos_ = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(binaryOutputFile)));
-			eConcepts_ = new EConceptUtility(problemListNamespaceSeed_, "ProblemList Path", dos_, parse.parse(releaseVersion.substring(0, 11)).getTime());
+			eConcepts_ = new EConceptUtility(problemListNamespaceSeed_, "ProblemList Path", dos_, parse.parse(converterResultVersion.substring(0, 11)).getTime());
 
 			BPT_ContentVersion contentVersion = new BPT_ContentVersion();
 			contentVersion.addProperty("Source File Name");
@@ -144,7 +111,7 @@ public class ProblemListMojo extends AbstractMojo
 			EConcept problemListConcept = refsets.getConcept("VA/KP Problem List");
 			eConcepts_.addStringAnnotation(problemListConcept, realPath.getName(), contentVersion.getProperty("Source File Name").getUUID(), false);
 			eConcepts_.addStringAnnotation(problemListConcept, loaderVersion, contentVersion.LOADER_VERSION.getUUID(), false);
-			eConcepts_.addStringAnnotation(problemListConcept, releaseVersion, contentVersion.RELEASE.getUUID(), false);
+			eConcepts_.addStringAnnotation(problemListConcept, converterResultVersion, contentVersion.RELEASE.getUUID(), false);
 
 			for (Problem p : problemList)
 			{

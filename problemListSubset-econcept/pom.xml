@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>problemListSubset</artifactId>
-		<groupId>gov.va.oia.terminology.converters</groupId>
-		<version>1.8</version>
-	</parent>
 
+	<groupId>gov.va.oia.terminology.converters</groupId>
 	<artifactId>problemListSubset-econcept</artifactId>
+	<!-- this should be set to ${sourceData.version}-loader-${loader.version} but that doesn't appease the maven gods that know best.... -->
+	<version>2009.09.21-loader-2.0-SNAPSHOT</version>
+	
 	<packaging>pom</packaging>
 	<name>problemListSubset-econcept</name>
-	<!-- this should be set to ${sourceData.version}-loader-${project.parent.version} but that doesn't appease the maven gods that know best.... -->
-	<version>2009.09.21-loader-1.8</version>
 
 	<properties>
 		<sourceData.version>2009.09.21</sourceData.version>
+		<loader.version>2.0-SNAPSHOT</loader.version>
 	</properties>
 
 	<build>
@@ -67,16 +65,16 @@
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>problemListSubset-mojo</artifactId>
-				<version>${project.parent.version}</version>
+				<version>${loader.version}</version>
 				<executions>
 					<execution>
 						<id>buildProblemListSubset</id>
 						<configuration>
 							<!-- Use this to process a local file (optionally, comment out the fetch VHAT XML data section above as well) -->
-							<!--<problemListPath>/mnt/foo/ProblemListSubset-2009-09-21.txt</problemListPath>-->
+							<!--<inputFileLocation>/mnt/foo/ProblemListSubset-2009-09-21.txt</inputFileLocation>-->
 
 							<!-- Use this to process whatever source file comes out of the zip file found in the fetch-problemListSubset-econcept process -->
-							<problemListPath>${project.build.directory}/generated-resources/src</problemListPath>
+							<inputFileLocation>${project.build.directory}/generated-resources/src</inputFileLocation>
 						</configuration>
 						<goals>
 							<goal>buildProblemListSubset</goal>
